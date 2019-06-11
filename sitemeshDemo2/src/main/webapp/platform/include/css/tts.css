@@ -1,0 +1,88 @@
+body {
+    overflow-x: hidden;
+}
+.date-height {
+    height: 35px !important;
+    padding-left: 5px;
+    width: 150px !important;
+}
+
+.date-time-width {
+    width: 180px !important;
+}
+
+
+.f-left {
+    float: left;
+    margin-right: 10px;
+}
+
+.f-right-new {
+    float: right;
+    margin: 18px 93px 0 0;
+}
+
+.f-right {
+    float: right;
+    margin-left: 10px;
+}
+
+
+.label-60 {
+    width: 60px !important;
+}
+.label-65 {
+    width: 65px !important;
+}
+
+.m-left-185 {
+    margin-left: 175px !important;
+}
+
+.submit-button {
+    width: 100px;
+}
+
+hr {
+    margin: 0px;
+}
+
+.line-chart {
+    margin-top: 20px;
+}
+
+.form-group {
+    min-width: 850px;
+}
+
+.stick {
+    position: fixed;
+    top: 0;
+}
+
+.laydate_show {
+    overflow: hidden;
+}
+
+.m-left-70 {
+    margin-left: 70px;
+}
+.m-left-65 {
+    margin-left: 65px;
+}
+.m-left-10 {
+    margin-left: 10px;
+}
+/*.merge-table{*/
+    /*margin-top: 20px;*/
+/*}*/
+.merge-table td, .merge-table th {
+    min-width: 80px;
+    white-space: nowrap;
+}
+
+.text-input {
+    height: 35px;
+    padding-left: 5px;
+    width: 150px;
+}

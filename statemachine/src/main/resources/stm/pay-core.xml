@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--根标签，代表一个状态机工作流的定义-->
+<flow label="支付核心">
+    <initial>
+        <action class="com.test.test.statemachine.pay.action.InitPayAction" label="订单去支付处理"
+                name="payAction" requisite="true"/>
+    </initial>
+    <!--state定义状态 支付中-->
+    <state name="PAY" label="支付中">
+        <!-- 可跳转的状态 支付成功-->
+        <connection toState="PAY_SUCCESS">
+            <condition class="com.test.nolan.statemachine.pay.condition.PaySuccessCondition"
+                       label="支付成功参数校验" name="refundInsuranceCheck"/>
+            <action class="com.test.test.statemachine.pay.action.PaySuccessAction"
+                    label="调用订单状态机变更订单状态" name="orderStatusChangeAction" requisite="true"
+                    dependent="true"/>
+        </connection>
+        <!-- 担保成功 -->
+        <connection toState="GUARANTEE_SUCCESS">
+            <action class="com.test.nolan.statemachine.pay.action.GuaranteeConfirmSuccessAction"
+                    label="调用订单状态机变更订单状态" name="orderStatusChangeAction" requisite="true"
+                    dependent="true"/>
+        </connection>
+    </state>
+    <!--支付成功-->
+    <state name="PAY_SUCCESS" label="支付成功">
+        <connection toState="REFUND">
+            <action class="com.test.test.statemachine.pay.action.RefundAction"
+                    label="调用订单状态机变更订单状态" name="orderStatusChangeAction" requisite="true"
+                    dependent="true"/>
+        </connection>
+        <connection toState="UNFREEZE">
+            <action class="com.test.nolan.statemachine.pay.action.UnfreezeAction"
+                    label="调用订单状态机变更订单状态" name="orderStatusChangeAction" requisite="true"
+                    dependent="true"/>
+        </connection>
+    </state>
+    <!--退款中-->
+    <state name="REFUND" label="退款中">
+        <connection toState="PAY_SUCCESS">
+            <action class="com.test.test.statemachine.pay.action.PaySuccessAction"
+                    label="调用订单状态机变更订单状态" name="orderStatusChangeAction" requisite="true"
+                    dependent="true"/>
+        </connection>
+        <connection toState="REFUND_SUCCESS">
+            <action class="com.test.nolan.statemachine.pay.action.RefundSuccessAction"
+                    label="调用订单状态机变更订单状态" name="orderStatusChangeAction" requisite="true"
+                    dependent="true"/>
+        </connection>
+    </state>
+    <!--解冻中-->
+    <state name="UNFREEZE" label="解冻中">
+        <connection toState="UNFREEZE_SUCCESS">
+            <action class="com.test.test.statemachine.pay.action.UnfreezeSuccessAction"
+                    label="调用订单状态机变更订单状态" name="orderStatusChangeAction" requisite="true"
+                    dependent="true"/>
+        </connection>
+    </state>
+    <!--退款成功-->
+    <state name="REFUND_SUCCESS" label="退款成功">
+    </state>
+    <!--解冻成功-->
+    <state name="UNFREEZE_SUCCESS" label="解冻成功">
+    </state>
+    <!--担保成功-->
+    <state name="GUARANTEE_SUCCESS" label="担保成功">
+        <connection toState="GUARANTEE_CONFIRM">
+            <action class="com.test.test.statemachine.pay.action.GuaranteeSuccessAction"
+                    label="调用订单状态机变更订单状态" name="orderStatusChangeAction" requisite="true"
+                    dependent="true"/>
+        </connection>
+        <connection toState="GUARANTEE_REVOKE">
+            <action class="com.test.nolan.statemachine.pay.action.GuaranteeRevokeAction"
+                    label="调用订单状态机变更订单状态" name="orderStatusChangeAction" requisite="true"
+                    dependent="true"/>
+        </connection>
+    </state>
+    <!--担保扣款-->
+    <state name="GUARANTEE_CONFIRM" label="担保扣款">
+        <connection toState="GUARANTEE_CONFIRM_SUCCESS">
+            <action class="com.test.nolan.statemachine.pay.action.GuaranteeConfirmAction"
+                    label="调用订单状态机变更订单状态" name="orderStatusChangeAction" requisite="true"
+                    dependent="true"/>
+        </connection>
+        <connection toState="REFUND_SUCCESS">
+            <action class="com.test.nolan.statemachine.pay.action.RefundSuccessAction"
+                    label="调用订单状态机变更订单状态" name="orderStatusChangeAction" requisite="true"
+                    dependent="true"/>
+        </connection>
+    </state>
+    <!--担保扣款成功-->
+    <state name="GUARANTEE_CONFIRM_SUCCESS" label="担保扣款成功">
+        <connection toState="PAY_SUCCESS">
+            <action class="com.test.nolan.statemachine.pay.action.GuaranteeConfirmSuccessAction"
+                    label="调用订单状态机变更订单状态" name="orderStatusChangeAction" requisite="true"
+                    dependent="true"/>
+        </connection>
+    </state>
+    <!--担保撤销-->
+    <state name="GUARANTEE_REVOKE" label="担保撤销">
+        <connection toState="GUARANTEE_REVOKE_SUCCESS">
+            <action class="com.test.nolan.statemachine.pay.action.GuaranteeRevokeAction"
+                    label="调用订单状态机变更订单状态" name="orderStatusChangeAction" requisite="true"
+                    dependent="true"/>
+        </connection>
+    </state>
+    <!--担保撤销成功-->
+    <state name="GUARANTEE_REVOKE_SUCCESS" label="担保撤销成功">
+    </state>
+
+</flow>

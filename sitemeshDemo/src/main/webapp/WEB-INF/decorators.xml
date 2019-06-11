@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 用来定义哪些资源使用哪些模板,  资源通过路径匹配, 模板固定文件夹在 根文件夹/decorators 下面-->
+<!-- 下面表示 /data/* 路径下的所有资源, 都使用 basic-theme.jsp 这个模板-->
+<decorators defaultdir="/decorators">
+    <decorator name="basic-theme" page="basic-theme.jsp">
+        <pattern>/data/*</pattern>
+    </decorator>
+</decorators>

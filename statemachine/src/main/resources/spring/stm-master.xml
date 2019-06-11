@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-3.1.xsd"
+       default-lazy-init="false">
+
+    <bean id="orderFlowContextFactory"
+          class="com.test.test.statemachine.order.service.OrderFlowContextFactory">
+
+    </bean>
+    <!-- Order Flow Config 定义状态机的流程配置-->
+    <bean id="orderRefundStateMachineConfig" class="com.test.statemachine.core.FlowStateMachineConfig">
+        <!--标识-->
+        <constructor-arg name="machineKey" value="order"/>
+        <!--具体状态机配置文件-->
+        <constructor-arg name="definitionFile" value="classpath:stm/order-core.xml"/>
+        <!--对应的上下文构造工厂，上下文包含了状态机执行过程中的输入信息和过程中产生的结果信息-->
+        <constructor-arg name="flowContextFactory" ref="orderFlowContextFactory"/>
+        <!--对应状态跃迁时触发对应的持久化操作-->
+        <constructor-arg name="flowStoreManager" ref="orderPayService"/>
+        <!--重试action时的并发数-->
+        <constructor-arg name="actionReExecuteThreadCount" value="2"/>
+    </bean>
+
+    <!-- Order Flow state machine config 状态机实现-->
+    <bean id="orderRefundStateMachine"
+          class="com.test.test.statemachine.order.core.UnreliableFlowStateMachineManagerImpl">
+        <!--状态机实现-->
+        <constructor-arg name="config" ref="orderRefundStateMachineConfig"/>
+    </bean>
+
+    <!--支付核心状态机配置-->
+    <bean id="payCoreStateMachineConfig" class="com.test.statemachine.core.FlowStateMachineConfig">
+        <!--标识-->
+        <constructor-arg name="machineKey" value="payCore"/>
+        <!--具体状态机配置文件-->
+        <constructor-arg name="definitionFile" value="classpath:stm/pay-core.xml"/>
+        <!--对应的上下文构造工厂，上下文包含了状态机执行过程中的输入信息和过程中产生的结果信息-->
+        <constructor-arg name="flowContextFactory" ref="payFlowContextFactory"/>
+    </bean>
+
+    <!--Order Flow state machine config 状态机实现-->
+    <bean id="payCoreStateMachine" class="com.test.nolan.statemachine.pay.core.UnreliableFlowStateMachineManagerImpl">
+        <!--状态机实现-->
+        <constructor-arg name="config" ref="payCoreStateMachineConfig"/>
+    </bean>
+
+    <!--&lt;!&ndash;定时任务，重试执行失败的action&ndash;&gt;-->
+    <!--<bean id="orderStateMachineFailActionTask" class="com.test.statemachine.common.task.FlowFailedActionTask">-->
+    <!--<constructor-arg name="flowStateMachineManager" ref="orderRefundStateMachine"/>-->
+    <!--</bean>-->
+    <!--&lt;!&ndash;定时任务，将等待时间超过5s的action record标记为失败&ndash;&gt;-->
+    <!--<bean id="orderStateMachineWaitingActionTask" class="com.test.statemachine.common.task.FlowWaitingActionTask">-->
+    <!--<constructor-arg name="machineKey" value="order"/>-->
+    <!--<constructor-arg name="transactionManager" ref="txManager"/>-->
+    <!--</bean>-->
+    <!-- Order Flow Setting end -->
+
+</beans>

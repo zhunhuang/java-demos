@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--根标签，代表一个状态机工作流的定义-->
+<flow label="酒店订单">
+    <initial>
+        <action class="com.test.nolan.statemachine.order.action.InitOrderAction" label="订单初始处理"
+                name="intOrderAction" requisite="true"/>
+    </initial>
+    <!--state定义状态-->
+    <state name="BOOK_OK" label="订房成功等待支付">
+        <!-- 可跳转的状态-->
+        <connection toState="CANCEL_OK">
+            <plugin class="com.test.nolan.statemachine.order.action.OrderStatusChangeQmqSender"
+                    label="校验取消支付成功插件" name="flowPluginImpl"/>
+            <condition class="com.test.nolan.statemachine.order.action.PayToBookCondition"
+                       label="校验取消支付成功参数" name="payToBookCondition"/>
+            <action class="com.test.test.statemachine.order.action.OrderStatusChangeAction"
+                    label="调用订单状态机变更订单状态" name="orderStatusChangeAction" requisite="true"
+                    dependent="true"/>
+        </connection>
+        <connection toState="PAY_OK">
+            <plugin class="com.test.nolan.statemachine.order.action.OrderStatusChangeQmqSender"
+                    label="校验取消支付成功插件" name="flowPluginImpl"/>
+            <action class="com.test.nolan.statemachine.order.action.PayOKAction"
+                    label="订单支付成功操作" name="payOKAction" requisite="true"
+                    dependent="true"/>
+        </connection>
+    </state>
+    <state name="PAY_OK" label="支付成功等待酒店确认">
+        <connection toState="CONFIRM_OK">
+        </connection>
+        <connection toState="APPLY_4_RETURN_PAY">
+        </connection>
+    </state>
+    <state name="CANCEL_OK" label="订单取消">
+    </state>
+    <state name="CONFIRM_OK" label="锁定房源">
+        <connection toState="APPLY_SYSTEM_REFUNDMENT">
+        </connection>
+    </state>
+    <state name="APPLY_SYSTEM_REFUNDMENT" label="退款待运营确认">
+        <connection toState="CONFIRM_OK">
+        </connection>
+        <connection toState="APPLY_HOTEL_REFUNDMENT">
+        </connection>
+    </state>
+    <state name="APPLY_HOTEL_REFUNDMENT" label="退款待酒店确认">
+        <connection toState="WAIT_REFUNDMENT">
+        </connection>
+        <connection toState="CONFIRM_OK">
+        </connection>
+    </state>
+    <state name="APPLY_4_RETURN_PAY" label="未锁定房源申请退款">
+        <connection toState="REFUND_OK">
+        </connection>
+    </state>
+    <state name="WAIT_REFUNDMENT" label="待退款">
+        <connection toState="REFUND_OK">
+        </connection>
+    </state>
+    <state name="REFUND_OK" label="退款完成"/>
+</flow>

@@ -1,0 +1,1 @@
+INSERT INTO admin_user VALUES ('admin','123456');

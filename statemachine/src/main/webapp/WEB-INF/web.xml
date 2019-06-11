@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4"
+         xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+         http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+    <!--定义了WEB应用的名字-->
+    <display-name>statemachine</display-name>
+
+    <!--声明WEB应用的描述信息-->
+    <description></description>
+
+    <!--context-param元素声明<应用范围内>的初始化参数, 这里声明的是spring的配置文件, 如果没有指定的话, 默认会加载WEB-INF/applicationContext.xml-->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            classpath:spring/root-context.xml
+        </param-value>
+    </context-param>
+
+
+    <!--############过滤器按照声明顺序执行, 最先进行编码过滤, 考虑到后续过滤器会依赖于这个过滤器########-->
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <!--初始化参数, 对应于Filter实现类(此处是CharacterEncodingFilter)的属性字段初始化值-->
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <!--过滤器要匹配的url路径(servlet),此处表示匹配所有的url路径(servlet)-->
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
+    <!--在spring中,可以通过读取配置文件来获取对象
+    ApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml");
+    User user = (User) ctx.getBean("user");
+        但每次Web项目启动的时候都会创建ServletContext对象，而该对象又有一个ServletContextListener的接口，监视ServletContext的创建，这样就可以调用这个接口的回调方法来启动Spring容器了-->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <!--RequestContextFilter实现ServletRequestListener监听器接口，该监听器监听HTTP请求事件，Web服务器接收的每次请求都会通知该监听器。通过配置RequestContextFilter，Spring容器与Web容器结合的更加密切-->
+    <listener>
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
+
+
+    <servlet>
+        <servlet-name>appServlet</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring/springmvc-servlet.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>appServlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <!--如果某个会话在一定时间内未被访问，服务器可以抛弃它以节省内存。可通过使用HttpSession的
+        setMaxInactiveInterval方法明确设置单个会话对象的超时值，或者可利用session-config元素制定缺省超时值<分钟>-->
+    <session-config>
+        <session-timeout>10000</session-timeout>
+    </session-config>
+
+    <!--如果Web应用具有想到特殊的文件，希望能保证给他们分配特定的MIME类型，则mime-mapping元素提供这种保证-->
+    <mime-mapping>
+        <extension>doc</extension>
+        <mime-type>application/vnd.ms-word</mime-type>
+    </mime-mapping>
+
+    <!--指示服务器在收到引用一个目录名而不是文件名的URL时，使用哪个文件-->
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+    <!--在返回特定HTTP状态代码时，或者特定类型的异常被抛出时，能够制定将要显示的页面-->
+    <error-page>
+        <error-code>403</error-code>
+        <location>/403.html</location>
+    </error-page>
+
+</web-app>

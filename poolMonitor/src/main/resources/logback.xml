@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="APP_Name" value=" expressAPItest"/>
+    <contextName>${APP_Name}</contextName>
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder charset="UTF-8">
+            <!-- "[]"   日志直接输出字符"[]"-->
+            <!-- "%"    表示转换符, 类似于"/"的作用-->
+            <!-- "%d{yyyy-MM-dd HH:mm:ss.SSS}"  输出指定格式日期, 格式基本就用这个, 精确到毫秒-->
+            <!-- "%contextName" 输出应用的名称-->
+            <!-- "%5p" 或 "%-5level"    输出日志级别, 5 表示这一项输出内容占多少位置, 不足的空格在"INFO"后面补足, -5 表示不足的空格在"INFO"前面补足-->
+            <!-- "%c{20}" 或 "%logger{0}" 输出日志的logger名(loggerFactory.getLogger 定义的)，可有一个整形参数，功能是缩短logger名，设置为0表示只输入logger最右边点符号之后的字符串-->
+            <!-- "%L"     输出执行日志请求的行号.尽量避免使用，除非执行速度不造成任何问题-->
+            <!-- "%thread"    输出当前的线程名-->
+            <!-- "%X{key}"  key对应的值来填充占位符, 设置方法MDC.set(key, value), 清空MDC.clear-->
+            <!-- pattern的打印实例如下-->
+            <!--[2018-01-10 11:39:20.211  INFO c.q.n.l.p.s.StdOutTest:17]  [main] [] [] INFO  StdOutTest - 日志打印.......-->
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS} %contextName %5p %c{20}.%M:%L] %X{QTRACER} [%thread] [%X{userName}] %5p - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="rollingAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${catalina.base}/logs/logback_test.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${catalina.base}/logs/logback_test.%d{yyyy-MM-dd-HH}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS} %5p %c{20}:%L] %X{QTRACER} [%thread] [%X{userName}] %5p - %msg%n
+            </pattern>
+        </encoder>
+        <append>true</append>
+        <prudent>false</prudent>
+    </appender>
+    <appender name="AsynRollingAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${catalina.base}/logs/logback_test_asyn.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${catalina.base}/logs/logback_test_asyn.%d{yyyy-MM-dd-HH}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS} %5p %c{20}:%L] %X{QTRACER} [%thread] [%X{userName}] %5p - %msg%n
+            </pattern>
+        </encoder>
+        <append>true</append>
+        <prudent>false</prudent>
+    </appender>
+    <appender name="errorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${catalina.base}/logs/logback_test_error.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${catalina.base}/logs/logback_test_error.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS} %5p %c{20}:%L] %X{QTRACER} [%thread] [%X{userName}] [%X{orderNo}] %-5level %logger{0} - %msg%n
+            </pattern>
+        </encoder>
+        <!--只展示ERROR的日志-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+    <appender name="AsyncAppender" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+        <discardingThreshold >0</discardingThreshold>
+        <neverBlock>true</neverBlock>
+        <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+        <queueSize>1024</queueSize>
+        <!-- 添加附加的appender,最多只能添加一个 -->
+        <appender-ref ref ="AsynRollingAppender"/>
+    </appender>
+
+    <appender name="REDIS_LOG_Appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${catalina.base}/logs/redis_log.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${catalina.base}/logs/redis_log.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder charset="UTF-8">
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS} %5p %c{20}:%L] %X{QTRACER} [%thread] [%X{userName}] [%X{orderNo}] %-5level %logger{0} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+    <appender name="DUBBO_ACCESS_LOG_Appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${catalina.base}/logs/dubbo_access.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${catalina.base}/logs/dubbo_access.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder charset="UTF-8">
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS} %5p %c{20}:%L] %X{QTRACER} [%thread] [%X{userName}] [%X{orderNo}] %-5level %logger{0} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+    <appender name="PERSONAL_VITAL_LOG_Appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${catalina.base}/logs/personal_vital.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${catalina.base}/logs/personal_vital.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder charset="UTF-8">
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS} %5p %c{20}:%L] %X{QTRACER} [%thread] [%X{userName}] [%X{orderNo}] %-5level %logger{0} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!--<appender name="QDB_MD5_TO_SQL_Appender" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+            <!--<fileNamePattern>${catalina.base}/logs/qdb.md5sql.%d{yyyy-MM-dd}.log.gz</fileNamePattern>-->
+            <!--<maxHistory>7</maxHistory>-->
+        <!--</rollingPolicy>-->
+        <!--<encoder charset="UTF-8">-->
+            <!--<pattern>%d %p [%c{10}] - %m%n</pattern>-->
+        <!--</encoder>-->
+    <!--</appender>-->
+
+    <!--<appender name="QDB_Nagios_Appender" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+            <!--<fileNamePattern>${catalina.base}/logs/Nagios.%d{yyyy-MM-dd}.log.gz</fileNamePattern>-->
+            <!--<maxHistory>7</maxHistory>-->
+        <!--</rollingPolicy>-->
+        <!--<encoder charset="UTF-8">-->
+            <!--<pattern>%m%n</pattern>-->
+        <!--</encoder>-->
+    <!--</appender>-->
+
+    <!--<appender name="QDB_Atom_Statistic_Appender" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+            <!--<fileNamePattern>${catalina.base}/logs/qdb-atom-statistic.%d{yyyy-MM-dd-HH}.log.gz</fileNamePattern>-->
+            <!--<maxHistory>7</maxHistory>-->
+        <!--</rollingPolicy>-->
+        <!--<encoder charset="UTF-8">-->
+            <!--<pattern>%m</pattern>-->
+        <!--</encoder>-->
+    <!--</appender>-->
+
+    <!--<appender name="QDB_Matrix_Statistic_Appender" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+            <!--<fileNamePattern>${catalina.base}/logs/qdb-matrix-statistic.%d{yyyy-MM-dd-HH}.log.gz</fileNamePattern>-->
+            <!--<maxHistory>7</maxHistory>-->
+        <!--</rollingPolicy>-->
+        <!--<encoder charset="UTF-8">-->
+            <!--<pattern>%m</pattern>-->
+        <!--</encoder>-->
+    <!--</appender>-->
+
+    <!--<appender name="QDB_Snapshot_Appender" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+            <!--<fileNamePattern>${catalina.base}/logs/qdb-statistic.%d{yyyy-MM-dd}.log.gz</fileNamePattern>-->
+            <!--<maxHistory>7</maxHistory>-->
+        <!--</rollingPolicy>-->
+        <!--<encoder charset="UTF-8">-->
+            <!--<pattern>%m%n</pattern>-->
+        <!--</encoder>-->
+    <!--</appender>-->
+
+    <!--<appender name="QDB_Statistic_Appender" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+            <!--<fileNamePattern>${catalina.base}/logs/qdb-statistic.%d{yyyy-MM-dd}.log.gz</fileNamePattern>-->
+            <!--<maxHistory>7</maxHistory>-->
+        <!--</rollingPolicy>-->
+        <!--<encoder charset="UTF-8">-->
+            <!--<pattern>%m%n</pattern>-->
+        <!--</encoder>-->
+    <!--</appender>-->
+
+    <logger name="express" level="TRACE" additivity="false">
+        <appender-ref ref="stdout" />
+    </logger>
+
+    <root level="DEBUG">
+        <appender-ref ref="stdout" />
+    </root>
+
+</configuration>

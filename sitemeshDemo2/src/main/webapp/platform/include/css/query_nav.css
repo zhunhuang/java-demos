@@ -1,0 +1,61 @@
+
+table {
+    margin: 0 auto;
+    padding: 0 auto;
+}
+
+button {
+    width: 80px;
+}
+
+.type-link {
+    text-align: center;
+    width: 1000px;
+    margin: 0 auto;
+    color: #999999;
+}
+
+#show-table {
+    width: 1000px;
+}
+
+.detail-table {
+    margin-bottom: 20px;
+    margin-top: 15px;
+}
+
+.detail-table td, .detail-table th {
+    width: 80px;
+}
+
+#chart {
+    width: 1000px;
+    min-width: 400px;
+    height: 400px;
+}
+
+.labelOver {
+    color: #F54766;
+}
+
+.labelSelect {
+    color: #F54766;
+}
+
+.mid {
+    margin-left: 100px;
+    margin-top: 30px;
+}
+
+.pager-mid {
+    padding-left: 600px;
+    margin-bottom: 50px;
+}
+
+.totalPage {
+    line-height: 14px;
+    vertical-align: middle;
+    float: left;
+    margin-top: 10px;
+    margin-right: 10px;
+}

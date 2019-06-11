@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace为命名空间，应该是mapper接口的全称-->
+<mapper namespace="com.learn.nolan.dao.UserDao">
+
+    <sql id="query_columns">
+        id,
+        name,
+        password
+    </sql>
+
+    <select id="queryById" resultType="com.learn.nolan.model.UserDO">
+        select
+        <include refid="query_columns"/>
+        from user
+        where
+        id = #{id}
+    </select>
+
+</mapper>

@@ -1,0 +1,5 @@
+CREATE TABLE user (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `name`     VARCHAR(32) NOT NULL DEFAULT '' COMMENT '用户名',
+  `password` VARCHAR(32) NOT NULL DEFAULT '' COMMENT '密码'
+);
