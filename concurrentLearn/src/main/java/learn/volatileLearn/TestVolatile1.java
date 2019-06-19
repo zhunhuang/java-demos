@@ -4,7 +4,7 @@ package learn.volatileLearn;
  * @author: zhun.huang
  * @create: 2018-03-07 下午9:05
  * @email: nolan.zhun@gmail.com
- * @description: 测试
+ * @description: volatile 应用场景测试: 多线程之间的通信
  */
 public class TestVolatile1 {
 

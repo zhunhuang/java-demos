@@ -4,7 +4,7 @@ package learn.volatileLearn;
  * @author: zhun.huang
  * @create: 2018-03-28 下午3:46
  * @email: nolan.zhun@gmail.com
- * @description: volatile 保证变量的
+ * @description: volatile 原理之: 语义等价性代码
  */
 public class TestVolatile2 {
 
@@ -28,6 +28,7 @@ public class TestVolatile2 {
 
         long v2 = 0L;
 
+        // 同步调用, 会导致v2的变量一定会刷回内存.从而保证可见性
         public synchronized void setV2(long l) {
             v2 = l;
         }
