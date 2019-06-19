@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
  * @author: zhun.huang
  * @create: 2018-01-20 下午12:36
  * @email: nolan.zhun@gmail.com
- * @description:
+ * @description: 这个测试可能没多大意义, 跟linux的线程调度等有关系.
  */
 public class TestTime {
 

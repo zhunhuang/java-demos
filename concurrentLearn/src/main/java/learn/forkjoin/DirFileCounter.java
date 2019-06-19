@@ -15,10 +15,13 @@ import java.util.concurrent.RecursiveTask;
 public class DirFileCounter {
     static ForkJoinPool forkJoinPool = new ForkJoinPool();
 
-    static CountingTask countingTask = new CountingTask(Environment.getDeploymentHome());
-
     public static void main(String[] args) {
+        CountingTask countingTask = new CountingTask(Environment.getDeploymentHome());
         Integer invoke = forkJoinPool.invoke(countingTask);
+        System.out.println(invoke);
+
+        CountingTask countingTask2 = new CountingTask(new File("/home/zhunhuang/q/IdeaProject/campusTraining/java_demos"));
+        invoke = forkJoinPool.invoke(countingTask2);
         System.out.println(invoke);
     }
 

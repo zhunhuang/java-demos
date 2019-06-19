@@ -5,6 +5,7 @@ package learn.memoreyReOrder;
  * @create: 2018-03-28 下午3:04
  * @email: nolan.zhun@gmail.com
  * @description: 测试内存重排序, 运行一定时间后会停止, 输出i=0
+ * 停止原因是: write()方法的两行代码被重新排序了
  */
 public class TestReOrder {
 
@@ -48,7 +49,7 @@ public class TestReOrder {
             thread1.start();
             thread2.start();
             try {
-                Thread.sleep(10);
+                Thread.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
