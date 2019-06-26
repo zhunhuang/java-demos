@@ -1,8 +1,6 @@
 package jackson;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import http.JacksonUtil;
+import base.JacksonUtil;
 import jackson.model.ResponseModel;
 import org.junit.Test;
 

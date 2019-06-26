@@ -1,7 +1,7 @@
 package jackson;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import http.JacksonUtil;
+import base.JacksonUtil;
 import jackson.model.ResponseModel;
 import org.junit.Test;
 

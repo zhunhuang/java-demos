@@ -1,7 +1,7 @@
 package express.service;
 import express.model.KdniaoTrackResponseData;
 import http.HttpUtil;
-import http.JacksonUtil;
+import base.JacksonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

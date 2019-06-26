@@ -1,6 +1,7 @@
 package aop;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import service.HelloService;
 
 /**
  * description:
@@ -14,7 +15,7 @@ public class App {
         ClassPathXmlApplicationContext context =
                 new ClassPathXmlApplicationContext("classpath*:spring-application.xml");
         HelloService helloService = (HelloService) context.getBean("helloService");
-        helloService.sayHello();
+        helloService.sayHello("nolan");
 //        SimpleDriverDataSource dataSource = (SimpleDriverDataSource)context.getBean("dataSource");
 //        try {
 //            Connection connection = dataSource.getConnection();

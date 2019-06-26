@@ -1,6 +1,6 @@
 package controller;
 
-import http.JacksonUtil;
+import base.JacksonUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;

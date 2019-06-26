@@ -31,15 +31,23 @@ public class AopLog {
     private static final Logger LOG = LoggerFactory
             .getLogger(AopLog.class);
 
+    /**
+     * 语法:  返回值类型 包名.类名.方法名(参数类型)
+     */
     @Pointcut("execution( * service.*.*(..))")
     public void aspect(){}
+
+    @Pointcut("execution(public * service.HelloService.*(..))")
+    public void aspect2(){}
 
     @Around("aspect()")
     public Object around(JoinPoint joinPoint) throws Throwable {
         long start = System.currentTimeMillis();
         try {
             LOG.info("=======before {}",joinPoint.getSignature().getName());
+            LOG.info("=======请求参数 {}",joinPoint.getArgs());
             Object proceed = ((ProceedingJoinPoint) joinPoint).proceed();
+            LOG.info("=======返回参数 {}",proceed);
             LOG.info("=======after {}",joinPoint.getSignature().getName());
             long end = System.currentTimeMillis();
             LOG.info("around " + joinPoint + "\tUse time : " + (end - start) + " ms!");
