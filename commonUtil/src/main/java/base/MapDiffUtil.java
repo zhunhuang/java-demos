@@ -7,6 +7,7 @@ import com.google.common.collect.Maps;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.SortedMap;
 
 /**
  * description:
@@ -21,6 +22,8 @@ public class MapDiffUtil {
 		System.out.println(note);
 		diffFixed();
 		diffRandom();
+		diffSort();
+		diffSort2();
 	}
 
 	public static void diffRandom() {
@@ -46,6 +49,38 @@ public class MapDiffUtil {
 		final Map map2 = JacksonUtil.convertValue(family2, Map.class);
 		final MapDifference difference = Maps.difference(map1, map2);
 		System.out.println("difference: " + difference);
+	}
+
+	/**
+	 * 如果关心顺序的话
+	 */
+	public static void diffSort(){
+		System.out.println("==================diffSort的diff:");
+		User user1 = new User("user1", 1);
+		User user2 = new User("user2", 1);
+		User user3 = new User("user3", 1);
+		Family family1 = new Family("family",Lists.newArrayList(user1,user2,user3));
+		Family family2 = new Family("family",Lists.newArrayList(user2,user1,user3));
+		final Map map1 = JacksonUtil.convertValue(family1, Map.class);
+		final Map map2 = JacksonUtil.convertValue(family2, Map.class);
+		final MapDifference difference = Maps.difference(map1, map2);
+		System.out.println(difference.areEqual());
+	}
+
+	/**
+	 * 如果不关心顺序的话
+	 */
+	public static void diffSort2(){
+		System.out.println("==================diffSort2的diff:");
+		User user1 = new User("user1", 1);
+		User user2 = new User("user2", 1);
+		User user3 = new User("user3", 1);
+		Family family1 = new Family("family",Lists.newArrayList(user1,user2,user3));
+		Family family2 = new Family("family",Lists.newArrayList(user2,user1,user3));
+		final Map map1 = JacksonUtil.convertValue(family1, SortedMap.class);
+		final Map map2 = JacksonUtil.convertValue(family2, SortedMap.class);
+		final MapDifference difference = Maps.difference(map1, map2);
+		System.out.println(difference.areEqual());
 	}
 
 	public static Family getRandomFamily() {
