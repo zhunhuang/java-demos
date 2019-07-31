@@ -2,7 +2,6 @@ package NIO.server;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.ServerSocket;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
@@ -14,6 +13,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.LongAdder;
 
 /**
  * @author: zhun.huang
@@ -22,11 +23,27 @@ import java.util.concurrent.Executors;
  * @description: 有关socket的事:https://www.cnblogs.com/straight/articles/7660889.html
  */
 public class NIOServer {
-    public static Executor executor = Executors.newFixedThreadPool(1, Executors.defaultThreadFactory());
+    public static Executor selectExecutor = Executors.newFixedThreadPool(1, Executors.defaultThreadFactory());
+    public static Executor ioExecutor = Executors.newFixedThreadPool(200, Executors.defaultThreadFactory());
 
-    public static void main(String[] args) throws InterruptedException {
-        executor.execute(new MultiplexerTimeServer());
-        Thread.sleep(1000000);
+    public static LongAdder longAdder = new LongAdder();
+
+    public static long startTime;
+
+    static {
+        Executors.newScheduledThreadPool(1)
+                .scheduleWithFixedDelay(new Runnable() {
+                    @Override
+                    public void run() {
+                        System.out.println("qps: " + longAdder.longValue() * 10000 / (System.currentTimeMillis() - startTime));
+                    }
+                }, 2000,1000, TimeUnit.MILLISECONDS);
+    }
+
+    public static void main(String[] args) throws IOException {
+        startTime = System.currentTimeMillis();
+        selectExecutor.execute(new MultiplexerTimeServer());
+        System.in.read();
     }
 
     public static class MultiplexerTimeServer implements Runnable {
@@ -111,7 +128,7 @@ public class NIOServer {
 
         private void handleInput(SelectionKey key) throws IOException {
             if (key.isValid()) {
-                // 表明当前是收到请求, channel 是ServerSocketChannel
+                // 表明当前是收到连接建立的请求, channel 是ServerSocketChannel
                 if (key.isAcceptable()) {
                     ServerSocketChannel ssc = (ServerSocketChannel) key.channel();
                     SocketChannel sc = ssc.accept();
@@ -120,28 +137,54 @@ public class NIOServer {
 
                 }
                 if (key.isReadable()) {
-                    SocketChannel sc = (SocketChannel) key.channel();
-                    ByteBuffer readBuffer = ByteBuffer.allocate(2048);
-                    int readBytes = sc.read(readBuffer);
-                    if (readBytes > 0) {
-                        // 将这个buffer的游标position设置为起始位置0, 这样就能读取数据了
-                        readBuffer.flip();
-                        byte[] bytes = new byte[readBuffer.remaining()];
-                        readBuffer.get(bytes);
-                        if ("query current time".equals(new String(bytes))) {
-                            SimpleDateFormat sb = new SimpleDateFormat("yyyy-MM-dd");
-                            String response = sb.format(new Date());
-                            System.out.println("response: " + response);
-                            doWrite(sc, response);
-                        }
-                    } else if (readBytes < 0) {
-                        // 对链路关闭
-                        key.cancel();
-                        sc.close();
-                    } else {
-                        // 读到0字节, 忽略
+                    // 放到异步IO线程池中去处理。
+                    ioExecutor.execute(new IoHandler(key));
+                }
+            }
+        }
+    }
+
+    public static class IoHandler implements Runnable {
+        private final SelectionKey key;
+
+        public IoHandler(SelectionKey key) {
+            this.key = key;
+        }
+
+        @Override
+        public void run() {
+            SocketChannel sc = (SocketChannel) key.channel();
+            ByteBuffer readBuffer = ByteBuffer.allocate(2048);
+            int readBytes = 0;
+            try {
+                readBytes = sc.read(readBuffer);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (readBytes > 0) {
+                // 将这个buffer的游标position设置为起始位置0, 这样就能读取数据了
+                readBuffer.flip();
+                byte[] bytes = new byte[readBuffer.remaining()];
+                readBuffer.get(bytes);
+                if ("query current time".equals(new String(bytes))) {
+                    SimpleDateFormat sb = new SimpleDateFormat("yyyy-MM-dd");
+                    String response = sb.format(new Date());
+                    try {
+                        doWrite(sc, response);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
+            } else if (readBytes < 0) {
+                // 对链路关闭
+                key.cancel();
+                try {
+                    sc.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                // 读到0字节, 忽略
             }
         }
 
@@ -151,6 +194,7 @@ public class NIOServer {
                 writeBuffer.put(response.getBytes());
                 writeBuffer.flip();
                 sc.write(writeBuffer);
+                longAdder.increment();
             }
         }
     }
