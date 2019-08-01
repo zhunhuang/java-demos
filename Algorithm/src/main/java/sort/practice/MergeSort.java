@@ -20,38 +20,34 @@ public class MergeSort implements Sort {
         }
     }
 
-    private  <T extends Comparable<? super T>> List<T> mergeSort(List<T> list) {
+    private <T extends Comparable<? super T>> List<T> mergeSort(List<T> list) {
         if (list.size() <= 1) {
             return list;
         }
-        int middle = list.size() / 2;
-        List<T> list1 = mergeSort(list.subList(0, middle));
-        List<T> list2 = mergeSort(list.subList(middle, list.size()));
-        return merge(list1, list2);
+        int midiumIndex = list.size() / 2;
+
+        return merge(mergeSort(list.subList(0, midiumIndex)), mergeSort(list.subList(midiumIndex, list.size())));
     }
 
     private <T extends Comparable<? super T>> List<T> merge(List<T> list1, List<T> list2) {
+        int i = 0, j = 0;
         List<T> merged = new ArrayList<>();
-        int i = 0;
-        int j = 0;
-        while (i < list1.size()) {
-            if (j>=list2.size()) {
-                break;
-            }
-            if (list1.get(i).compareTo(list2.get(j)) <= 0) {
-                merged.add(list2.get(j));
-                j++;
-            } else {
+        while (i < list1.size() && j < list2.size()) {
+            if (list1.get(i).compareTo(list2.get(j)) < 0) {
                 merged.add(list1.get(i));
                 i++;
+            } else {
+                merged.add(list2.get(j));
+                j++;
             }
         }
-        while (i<list1.size()) {
-            merged.add(list1.get(i++));
+        while (i < list1.size()) {
+            merged.add(list1.get(i));
+            i++;
         }
-
-        while (j<list2.size()) {
-            merged.add(list2.get(j++));
+        while (j < list2.size()) {
+            merged.add(list2.get(j));
+            j++;
         }
         return merged;
     }

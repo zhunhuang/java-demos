@@ -18,21 +18,21 @@ public class QuickSort implements Sort {
     }
 
     public <T extends Comparable<? super T>> void quickSort(List<T> list, int startIndex, int endIndex) {
-        if (endIndex - startIndex <= 0) {
+
+        if (startIndex >= endIndex) {
             return;
         }
-        // 选取第一个作为观察者
         T observer = list.get(startIndex);
-        int smallerNumber = 0;
+        int position = startIndex;
         for (int i = startIndex + 1; i <= endIndex; i++) {
-            if (observer.compareTo(list.get(i)) < 0) {
-                smallerNumber++;
-                Collections.swap(list, startIndex + smallerNumber, i);
+            if (list.get(i).compareTo(observer) < 0) {
+                position++;
+                Collections.swap(list, position, i);
             }
         }
-        Collections.swap(list, startIndex + smallerNumber, startIndex);
-        quickSort(list, startIndex, startIndex + smallerNumber - 1);
-        quickSort(list, startIndex + smallerNumber + 1, endIndex);
+        Collections.swap(list, position, startIndex);
+        quickSort(list, startIndex, position-1);
+        quickSort(list, position + 1, endIndex);
     }
 
 

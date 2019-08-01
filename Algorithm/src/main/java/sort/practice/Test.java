@@ -66,17 +66,25 @@ public class Test {
             stopwatch.reset();
             stopwatch.start();
 
+            ArrayList<User> copy6 = new ArrayList<User>(randomList);
+            new QuickSort().sort(copy6);
+            counts[5] = counts[5]+ stopwatch.elapsed(TimeUnit.MICROSECONDS);
+            System.out.println("堆排："+stopwatch.elapsed(TimeUnit.MICROSECONDS));
+            stopwatch.reset();
+            stopwatch.start();
+
 
             for (int i = 0; i < randomList.size(); i++) {
                 if (copy1.get(i).compareTo(copy2.get(i)) != 0
                         || copy1.get(i).compareTo(copy3.get(i)) != 0
                         || copy1.get(i).compareTo(copy4.get(i)) != 0
-                        || copy1.get(i).compareTo(copy5.get(i)) != 0) {
+                        || copy1.get(i).compareTo(copy5.get(i)) != 0
+                        || copy1.get(i).compareTo(copy6.get(i)) != 0) {
                     System.out.println("方法有误");
                 }
             }
         }
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             System.out.println(counts[i]);
         }
 

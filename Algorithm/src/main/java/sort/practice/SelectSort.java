@@ -13,18 +13,18 @@ import java.util.List;
 public class SelectSort implements Sort {
     @Override
     public <T extends Comparable<? super T>> void sort(List<T> list) {
-        for (int i = 0; i < list.size()-1; i++) {
-            T max = list.get(i);
-            int maxIndex = i;
+        for (int i = 0; i < list.size() - 1; i++) {
+            T MIN = list.get(i);
+            int minIndex = i;
             for (int j = i+1; j < list.size(); j++) {
-                if (list.get(j).compareTo(max)>=0) {
-                    max = list.get(j);
-                    maxIndex = j;
+                if (list.get(j).compareTo(MIN) < 0) {
+                    MIN = list.get(j);
+                    minIndex = j;
                 }
             }
             T tmp = list.get(i);
-            list.set(i,max);
-            list.set(maxIndex,tmp);
+            list.set(i,list.get(minIndex));
+            list.set(minIndex,tmp);
         }
     }
 

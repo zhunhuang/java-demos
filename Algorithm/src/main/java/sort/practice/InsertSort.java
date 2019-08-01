@@ -15,7 +15,7 @@ public class InsertSort implements Sort {
     public <T extends Comparable<? super T>> void sort(List<T> list) {
         for (int i = 0; i < list.size() - 1; i++) {
             for (int j = i+1; j > 0; j--) {
-                if (list.get(j).compareTo(list.get(j-1))>0) {
+                if (list.get(j).compareTo(list.get(j-1))<0) {
                     T tmp = list.get(j);
                     list.set(j,list.get(j-1));
                     list.set(j-1,tmp);
