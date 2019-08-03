@@ -17,27 +17,27 @@ public class BigAdder {
         if (!isInteger(var2)) {
             throw new IllegalArgumentException("var2 is not a number");
         }
-        String result = "";
+        StringBuilder result = new StringBuilder();
         String added = var1.length()>var2.length()? var1:var2;
         String adder = var1.length()>var2.length()? var2:var1;
         int incr = 0;
         for (int i = 1; i <= adder.length(); i++) {
-            int consult = added.charAt(added.length() - i)- 48 + adder.charAt(adder.length() - i) - 48 + incr;
+            int consult = added.charAt(added.length() - i)- '0' + adder.charAt(adder.length() - i) - '0' + incr;
             incr = consult/10;
             consult = consult%10;
-            result = result.concat(String.valueOf(consult));
+            result = result.append(String.valueOf(consult));
         }
         for (int i = adder.length()+1; i <=added.length() ; i++) {
-            int consult = added.charAt(added.length() - i)- 48 + incr;
+            int consult = added.charAt(added.length() - i)- '0' + incr;
             incr = consult/10;
             consult = consult%10;
-            result = result.concat(String.valueOf(consult));
+            result = result.append(String.valueOf(consult));
         }
         if (incr==1) {
-            result = result.concat("1");
+            result = result.append("1");
         }
 
-        return reverse(result);
+        return result.reverse().toString();
     }
 
     public static boolean isInteger(String str) {

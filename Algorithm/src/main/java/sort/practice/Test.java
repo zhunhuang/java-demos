@@ -26,7 +26,7 @@ public class Test {
         Stopwatch stopwatch = Stopwatch.createUnstarted();
         for (int j = 0; j < 10; j++) {
 
-            List<User> randomList = User.getRandomList(3000);
+            List<User> randomList = User.getRandomList(30000);
 
             stopwatch.reset();
             stopwatch.start();
