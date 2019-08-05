@@ -14,6 +14,18 @@ public class No15 {
         if (nums == null || nums.length < 3) {
             return new ArrayList<>();
         }
+        boolean allZero = true;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i]!=0) {
+                allZero =false;
+                break;
+            }
+        }
+        if (allZero) {
+            List<List<Integer>> result = new ArrayList<>();
+            result.add(Arrays.asList(0,0,0));
+            return result;
+        }
         Arrays.sort(nums);
         List<List<Integer>> result = new ArrayList<>();
         Set<String> reduce = new HashSet<>();
@@ -35,6 +47,7 @@ public class No15 {
                     result.add(Arrays.asList(nums[L], nums[i], nums[R]));
                     L--;
                     R++;
+                    continue;
                 }
                 if (tmpSum > 0) {
                     L--;
@@ -48,6 +61,6 @@ public class No15 {
     }
 
     public static void main(String[] args) {
-        System.out.println(new No15().threeSum(new int[]{0,0,0,0,0,0,0}));
+        System.out.println(new No15().threeSum(new int[]{3,0,-2,-1,1,2}));
     }
 }

@@ -27,20 +27,21 @@ public class HeapSort implements Sort {
     <T extends Comparable<? super T>> void maxHeapFixdown(T[] array, int i, int count) {
 
         int j;
-
+        // 注意这里的调整，不用通过一直交换，为啥呢？ 因为只有i节点位置不对，其余的位置顺序都是对的，只需要其余位置上浮
+        // 再将i节点放到匹配到的位置就行
         T temp = array[i];
         // i为父节点，j=2*i+1即为左子节点。2*i+2即为右子节点
         j = 2 * i + 1;
         while (j < count) {
             if (j + 1 < count && array[j + 1].compareTo(array[j]) > 0) j++; // 找出较大的子节点
 
-            if (array[j].compareTo(temp) < 0) break; // 如果较大的子节点比父节点小, 直接返回
+            if (array[j].compareTo(temp) < 0) break; // 如果较大的子节点都比父节点小, 表示位置找到了。直接返回
 
             array[i] = array[j]; // 设置父节点为较大节点
             i = j; // 调整的子节点作为新一轮的父节点
             j = 2 * i + 1; // 调整的子节点的子节点
         }
-
+        // 将i节点的值放到所匹配到的位置上
         array[i] = temp;
     }
 

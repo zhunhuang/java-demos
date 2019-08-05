@@ -25,7 +25,7 @@ public class No22 {
         if (leftCir < n) {
             backTrace(combination.concat("("), n, leftCir + 1, right);
         }
-        if (right < n) {
+        if (right < leftCir) {
             backTrace(combination.concat(")"), n, leftCir, right + 1);
         }
     }
