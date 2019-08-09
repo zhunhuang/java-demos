@@ -16,6 +16,12 @@ public class Main {
         System.out.println(FileUtils.getTempDirectory().getName());
         System.out.println(FileUtils.getTempDirectoryPath());
         System.out.println(FileUtils.getUserDirectory());
+        System.out.println(this.getClass().getResource("").getPath());
+        System.out.println(this.getClass().getResource("/").getPath());
+        System.out.println(this.getClass().getClassLoader().getResource("").getPath());
+        System.out.println(this.getClass().getResource("/myResource.txt").getPath());
+        System.out.println(this.getClass().getResource("/myResource.txt").getPath());
+        System.out.println(this.getClass().getResourceAsStream("/myResource.txt"));
     }
 
     public void testCSV(){

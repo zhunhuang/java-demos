@@ -10,7 +10,7 @@ import java.util.Random;
  * @email: nolan.zhun@gmail.com
  * @description: 通过生产者-消费者模型
  */
-public class TestWait {
+public class TestWait1 {
 
     public static void main(String[] args) {
         Queue<Integer> workingQueue = new LinkedList<>();

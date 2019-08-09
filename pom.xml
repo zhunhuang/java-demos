@@ -22,7 +22,6 @@
         <module>FileOperationLearn</module>
         <module>H2DatabaseDemo</module>
         <module>H2DatabaseInSpring</module>
-        <module>jacksonTest</module>
         <module>java8NewFeature</module>
         <module>JVMParameter</module>
         <module>logbackTest</module>
@@ -59,6 +58,7 @@
         <module>systemInfoTest</module>
         <module>mavenshadetest</module>
         <module>mavenshadetest2</module>
+        <module>javaGeneric</module>
     </modules>
 
     <properties>
