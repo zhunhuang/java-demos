@@ -59,6 +59,7 @@
         <module>mavenshadetest</module>
         <module>mavenshadetest2</module>
         <module>javaGeneric</module>
+        <module>TDDtest</module>
     </modules>
 
     <properties>
