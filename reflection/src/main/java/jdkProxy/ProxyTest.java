@@ -2,9 +2,12 @@ package jdkProxy;
 
 import sun.misc.ProxyGenerator;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 /**
@@ -19,7 +22,7 @@ import java.lang.reflect.Proxy;
  */
 public class ProxyTest {
 
-    public static void main(String[] args) throws Exception {
+    public static void maisn(String[] args) throws Exception {
         // 通过这种方式来实例化被代理的对象。
         Car audi = (Car) Proxy.newProxyInstance(Car.class.getClassLoader(), new Class<?>[] {Car.class}, new CarHandler(new Audi()));
         audi.drive("name1", "audi");
@@ -34,5 +37,29 @@ public class ProxyTest {
         } catch (IOException e) {
             System.out.println("error:: " + e);
         }
+    }
+
+    public static void main(String[] args) {
+        Car 被代理啦 = (Car)Proxy.newProxyInstance(Car.class.getClassLoader(), new Class[]{Car.class}, new InvocationHandler() {
+            Car toProxy = new Audi();
+
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                MyLogAnnotation annotation = method.getAnnotation(MyLogAnnotation.class);
+                Object returnValue;
+                if (annotation != null) {
+                    System.out.println("befor被代理啦");
+                    returnValue = method.invoke(toProxy, args);
+                    System.out.println("after被代理啦");
+
+                } else {
+                    returnValue = method.invoke(toProxy, args);
+                }
+                return returnValue;
+            }
+        });
+        被代理啦.drive("123","asdad");
+        System.out.println("=================");
+        被代理啦.drive2("123","asdad");
     }
 }

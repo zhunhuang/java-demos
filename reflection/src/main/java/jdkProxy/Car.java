@@ -8,4 +8,8 @@ package jdkProxy;
  */
 public interface Car {
     void drive(String driverName, String carName);
+
+    @MyLogAnnotation
+    void drive2(String driverName, String carName);
+
 }

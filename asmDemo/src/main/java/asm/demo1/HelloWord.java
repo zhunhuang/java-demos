@@ -4,6 +4,7 @@ import aj.org.objectweb.asm.ClassWriter;
 import aj.org.objectweb.asm.MethodVisitor;
 import aj.org.objectweb.asm.Opcodes;
 import asm.ClassGenerateHelper;
+import org.aspectj.lang.annotation.Aspect;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -39,7 +40,7 @@ public class HelloWord extends ClassLoader {
         main.visitEnd();
 
         byte[] code = classWriter.toByteArray();
-        FileOutputStream fout = new FileOutputStream("./asmDemo/com/nolan/learn/asm/Example.class");
+        FileOutputStream fout = new FileOutputStream("./asmDemo/Example.class");
         fout.write(code);
         fout.close();
 

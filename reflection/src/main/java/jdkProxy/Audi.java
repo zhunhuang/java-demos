@@ -10,7 +10,12 @@ public class Audi implements Car {
 
     @Override
     public void drive(String driverName, String carName) {
-        System.err.println("Audi is driving... " + "driverName: " + driverName + ", carName" + carName);
+        System.out.println("Audi is driving... " + "driverName: " + driverName + ", carName" + carName);
     }
 
+    @Override
+    @MyLogAnnotation
+    public void drive2(String driverName, String carName) {
+        System.out.println("drive2 is driving... " + "driverName: " + driverName + ", carName" + carName);
+    }
 }

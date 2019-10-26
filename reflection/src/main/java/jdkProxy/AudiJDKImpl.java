@@ -90,6 +90,17 @@ public class AudiJDKImpl extends Proxy implements Car {
         }
     }
 
+    /**
+     * 测试代码，可删除
+     * @param driverName
+     * @param carName
+     */
+    @Override
+    @MyLogAnnotation
+    public void drive2(String driverName, String carName) {
+        System.err.println("drive2 is driving... " + "driverName: " + driverName + ", carName" + carName);
+    }
+
     @Override
     public final int hashCode() /*throws*/ {
         try {
