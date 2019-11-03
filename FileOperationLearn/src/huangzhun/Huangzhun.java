@@ -18,9 +18,8 @@ public class Main {
         System.out.println(FileUtils.getTempDirectory().getName());
         System.out.println(FileUtils.getTempDirectoryPath());
         System.out.println(FileUtils.getUserDirectory());
-        System.out.println("vb");
-        System.out.println(Main.class.getResource("./").getPath());//  /classes/test
-        System.out.println(Main.class.getResource("/").getPath());//
+        System.out.println(Main.class.getResource("").getPath());
+        System.out.println(Main.class.getResource("/").getPath());
         String classPath = "classpath:myResource.txt";
         System.out.println("aa");
         System.out.println(Main.class.getClassLoader().getResource("").getPath());
