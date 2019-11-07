@@ -8,6 +8,6 @@ package context;
  */
 public interface BeanFactory {
 
-    Object getBean();
+    Object getBean(String beanName);
 
 }

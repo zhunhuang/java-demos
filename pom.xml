@@ -62,6 +62,7 @@
         <module>TDDtest</module>
         <module>springTransaction</module>
         <module>junitTest</module>
+        <module>aviatorTest</module>
     </modules>
 
     <properties>

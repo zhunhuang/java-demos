@@ -2,13 +2,9 @@ package context;
 
 import config.Xmlconfig;
 import definition.BeanDefinition;
-import definition.PropertyDefinition;
 
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
-
-import static java.beans.DefaultPersistenceDelegate.getPropertyDescriptor;
 
 /**
  * @author: zhun.huang
@@ -18,16 +14,16 @@ import static java.beans.DefaultPersistenceDelegate.getPropertyDescriptor;
  */
 public class ClassPathXmlApplicationContext implements BeanFactory {
 
-    private Map<String, Object> ioc;
+    private Map<String, Object> ioc = new HashMap<>();
 
     private Map<String, BeanDefinition> config;
 
     @Override
-    public Object getBean() {
-        return new Object();
+    public Object getBean(String beanName) {
+        return ioc.get(beanName);
     }
 
-    ClassPathXmlApplicationContext(String path) {
+    public ClassPathXmlApplicationContext(String path) {
         try {
             config = Xmlconfig.getConfig(path);
         } catch (Exception e) {

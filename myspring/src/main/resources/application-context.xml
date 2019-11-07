@@ -1,0 +1,5 @@
+<beans>
+    <bean beanId="testService" className="test.TestService">
+        <properties name="age" value="12"></properties>
+    </bean>
+</beans>

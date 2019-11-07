@@ -17,11 +17,11 @@ public class Test {
         test.testAnnotation();
     }
 
-    @LogAnnotation(level = 2)
+    @LogAnnotation(level = 23)
     private void testAnnotation() {
         Class<?> aClass = this.getClass();
         try {
-            Method testAnnotation = aClass.getMethod("testAnnotation");
+            Method testAnnotation = aClass.getDeclaredMethod("testAnnotation");
             LogAnnotation annotation = testAnnotation.getAnnotation(LogAnnotation.class);
             if (annotation != null) {
                 System.out.println("got annotation");
