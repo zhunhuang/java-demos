@@ -63,6 +63,7 @@
         <module>springTransaction</module>
         <module>junitTest</module>
         <module>aviatorTest</module>
+        <module>springStateMachine</module>
     </modules>
 
     <properties>

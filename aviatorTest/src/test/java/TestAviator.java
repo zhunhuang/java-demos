@@ -77,5 +77,53 @@ public class TestAviator {
         Assert.assertEquals(tradeAmount.multiply(feeRate).setScale(0,BigDecimal.ROUND_HALF_UP),result.setScale(0,BigDecimal.ROUND_HALF_UP));
     }
 
+    @Test
+    public void test3BigDecimal() {
+        BigDecimal tradeAmount = BigDecimal.valueOf(100);
+        BigDecimal feeRate = BigDecimal.valueOf(0.38);
+        Map<String,Object> env = new HashMap<>();
+        env.put("tradeAmount",tradeAmount);
+        env.put("tradeCount",50000);
+        env.put("feeRate",feeRate);
+
+        BigDecimal result = (BigDecimal) AviatorEvaluator.execute("tradeCount > 50000 ? tradeAmount*feeRate : 1000*tradeAmount*feeRate",env);
+        System.out.println(result.longValue());
+
+        Assert.assertEquals(tradeAmount.multiply(feeRate).setScale(0,BigDecimal.ROUND_HALF_UP),result.setScale(0,BigDecimal.ROUND_HALF_UP));
+    }
+
+    @Test
+    public void test4BigDecimal() {
+        BigDecimal tradeAmount = BigDecimal.valueOf(100);
+        BigDecimal feeRate = BigDecimal.valueOf(0.38);
+        Map<String,Object> env = new HashMap<>();
+        env.put("tradeAmount",tradeAmount);
+        env.put("tradeCount",50012);
+        env.put("feeRate",feeRate);
+        Object execute = AviatorEvaluator.execute("tradeCount > 50000? 100.0*(tradeCount-50000):0.0", env);
+        System.out.println(execute.getClass());
+
+        Double result = (Double) AviatorEvaluator.execute("tradeCount > 50000? 100.0*(tradeCount-50000):0.0",env);
+        Double result2 = (Double) AviatorEvaluator.execute("tradeCount <= 50000? 0.0: 1000000.0",env);
+        System.out.println(result.longValue()+result2.longValue());
+        System.out.println();
+    }
+
+    @Test
+    public void test5BigDecimal() {
+        BigDecimal tradeAmount = BigDecimal.valueOf(100);
+        BigDecimal feeRate = BigDecimal.valueOf(0.38);
+        Map<String,Object> env = new HashMap<>();
+        env.put("tradeAmount",tradeAmount);
+        env.put("tradeCount",50000);
+        env.put("feeRate",feeRate);
+
+        BigDecimal result = (BigDecimal) AviatorEvaluator.execute("tradeAmount > 50000? : 0.01*(tradeAmount-50000)",env);
+        BigDecimal result2 = (BigDecimal) AviatorEvaluator.execute("tradeAmount <= 50000? : 1000",env);
+        System.out.println(result.longValue());
+
+        Assert.assertEquals(tradeAmount.multiply(feeRate).setScale(0,BigDecimal.ROUND_HALF_UP),result.setScale(0,BigDecimal.ROUND_HALF_UP));
+    }
+
 
 }
