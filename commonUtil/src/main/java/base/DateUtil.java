@@ -104,4 +104,23 @@ public class DateUtil {
         cd.add(Calendar.DATE, -domesticDayOfWeek);
         return getThisDayEndTime(cd.getTime());
     }
+
+    public static long getDayOfWeek(Date date) {
+        //获得入参的日期
+        Calendar cd = Calendar.getInstance();
+        cd.setTime(date);
+
+        // 获得入参日期是一周的第几天
+        int dayOfWeekOfToDay = cd.get(Calendar.DAY_OF_WEEK);
+        // 获取本周的第几天, 周一是第0天,周日是第6天
+        return dayOfWeekOfToDay == Calendar.SUNDAY ? 6 : dayOfWeekOfToDay - 2;
+    }
+
+    public static long getDayOfMonth(Date date) {
+        //获得入参的日期
+        Calendar cd = Calendar.getInstance();
+        cd.setTime(date);
+
+        return cd.get(Calendar.DAY_OF_MONTH);
+    }
 }

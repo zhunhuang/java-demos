@@ -64,6 +64,7 @@
         <module>junitTest</module>
         <module>aviatorTest</module>
         <module>springStateMachine</module>
+        <module>aspectJLTWdemo</module>
     </modules>
 
     <properties>

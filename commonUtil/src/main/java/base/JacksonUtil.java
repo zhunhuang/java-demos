@@ -39,7 +39,7 @@ public class JacksonUtil {
         mapper.configure(JsonParser.Feature.ALLOW_NUMERIC_LEADING_ZEROS, true);
         // 允许单引号
         mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
-        // 允许未用引号括起来的控制自负
+        // 允许未用引号括起来的控制字符
         mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
         // 允许字段名 不用引号
         mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);

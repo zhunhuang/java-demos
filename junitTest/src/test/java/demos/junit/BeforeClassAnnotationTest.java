@@ -26,6 +26,6 @@ public class BeforeClassAnnotationTest {
 
     @Test
     public void test2(){
-        System.out.println("执行测试2");
+        System.out.println("执行测试2" + null);
     }
 }

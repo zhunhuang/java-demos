@@ -1,0 +1,12 @@
+<aspectj>
+    <aspects>
+        <aspect name="com.test.nolan.aspectj.aop.LogAspect"/>
+        <weaver options="-verbose -showWeaveInfo">
+            <include within="com.test.nolan.aspectj.service.*"/>
+        </weaver>
+    </aspects>
+    <weaver options="-verbose -showWeaveInfo">
+        <include within="com.test.nolan.aspectj.service.*"/>
+        <include within="com.test.nolan.aspectj.aop.*"/>
+    </weaver>
+</aspectj>

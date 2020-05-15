@@ -38,7 +38,11 @@ public class HttpUtil {
         fast_client.getHttpConnectionManager().getParams().setSoTimeout(2000);
     }
 
-    public static String get(String url, Cookie[] cookies, String monitorKey, Map<String, String> headers) {
+    public static String get(String url, Map<String, String> headers) {
+        return get(url,null,headers);
+    }
+
+    public static String get(String url, Cookie[] cookies, Map<String, String> headers) {
         logger.info("url:{}", url);
         long startTime = System.currentTimeMillis();
         GetMethod method = new GetMethod(url);

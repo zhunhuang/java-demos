@@ -35,6 +35,6 @@
         <property name="dataSource" ref="dataSource"></property>
     </bean>
     <!--启用事务注解-->
-    <tx:annotation-driven transaction-manager="transactionManager"></tx:annotation-driven>
+    <tx:annotation-driven transaction-manager="transactionManager" mode="aspectj"></tx:annotation-driven>
 
 </beans>

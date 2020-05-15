@@ -1,7 +1,9 @@
 package hello;
 
+import org.springframework.jdbc.datasource.ConnectionHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -22,7 +24,8 @@ public class TransactionTestService {
 
     @Transactional(rollbackFor = Exception.class)
     public String save(String name, boolean throwError) throws SQLException {
-        Connection connection = dataSource.getConnection();
+        ConnectionHolder connectionHolder = (ConnectionHolder) TransactionSynchronizationManager.getResourceMap().get(dataSource);
+        Connection connection = connectionHolder.getConnection();
         Statement statement = connection.createStatement();
         statement.execute("insert into ADMIN_USER values ('" + name + "','123456')");
         if (throwError) {
