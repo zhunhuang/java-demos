@@ -41,7 +41,7 @@ public class UserServiceTest extends StartAppTests {
     }
 
     @Test
-    public void saveUsers_transaction_rollBack_fail_on_selfCall() {
+    public void saveUsers_transaction_rollBack_success_on_selfCall() {
         UserDO user5 = getUser(5);
         UserDO user6 = new UserDO();
         try {
@@ -51,7 +51,7 @@ public class UserServiceTest extends StartAppTests {
         }
         UserDO user5FromDB = userService.getByName(user5.getName());
         System.out.println(user5FromDB);
-        assertNotNull(user5FromDB);
+        assertNull(user5FromDB);
     }
 
     private UserDO getUser(int i) {

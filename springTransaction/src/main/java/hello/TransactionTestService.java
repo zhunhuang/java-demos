@@ -24,14 +24,18 @@ public class TransactionTestService {
 
     @Transactional(rollbackFor = Exception.class)
     public String save(String name, boolean throwError) throws SQLException {
-        ConnectionHolder connectionHolder = (ConnectionHolder) TransactionSynchronizationManager.getResourceMap().get(dataSource);
+        ConnectionHolder connectionHolder = (ConnectionHolder) TransactionSynchronizationManager.getResource(dataSource);
+        // 需确保拿到的是同一个连接
         Connection connection = connectionHolder.getConnection();
+        // 错误用法
+        // Connection connection = dataSource.getConnection();
+
         Statement statement = connection.createStatement();
-        statement.execute("insert into ADMIN_USER values ('" + name + "','123456')");
+        statement.execute("insert into `user` values ('" + name + "','123456')");
         if (throwError) {
             throw new RuntimeException("模拟异常，回滚事务");
         }
-        statement.execute("insert into ADMIN_USER values ('nolan2','222222')");
+        statement.execute("insert into `user` values ('nolan2','222222')");
         return "ok";
     }
 
@@ -39,7 +43,7 @@ public class TransactionTestService {
         try {
             Connection connection = dataSource.getConnection();
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * from ADMIN_USER where name='" + name + "'");
+            ResultSet resultSet = statement.executeQuery("SELECT * from `user` where name='" + name + "'");
             while (resultSet.next()) {
                 System.out.println(resultSet.getString("name"));
                 System.out.println(resultSet.getString("password"));

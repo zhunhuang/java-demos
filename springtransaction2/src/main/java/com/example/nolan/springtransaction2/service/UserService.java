@@ -20,8 +20,8 @@ public class UserService {
     @Resource
     private UserRepository userRepository;
 
-    @Transactional(rollbackFor = Exception.class, transactionManager = "txManager")
-//    @Transactional(rollbackFor = Exception.class)
+//    @Transactional(rollbackFor = Exception.class, transactionManager = "txManager")
+    @Transactional(rollbackFor = Exception.class)
     public void saveUsers(List<UserDO> userDOS) {
         for (UserDO userDO : userDOS) {
             if (userDO == null || StringUtils.isEmpty(userDO.getName())

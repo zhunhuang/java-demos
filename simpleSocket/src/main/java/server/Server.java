@@ -2,10 +2,9 @@ package server;
 
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -17,7 +16,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 public class Server {
 
-    private static ThreadPoolExecutor executor = (ThreadPoolExecutor)Executors.newFixedThreadPool(5);
+    private static ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(5);
 
     public static void main(String[] args) throws IOException {
         ServerSocket server = new ServerSocket(8080);
@@ -39,9 +38,9 @@ public class Server {
         @Override
         public void run() {
             try {
-                byte[] input = new byte[4096];
-                socket.getInputStream().read(input);
-                byte[] output = process(input);
+                char[] input = new char[4096];
+                int size = new InputStreamReader(socket.getInputStream()).read(input);
+                byte[] output = process(new String(input, 0, size));
                 socket.getOutputStream().write(output);
                 socket.getOutputStream().flush();
             } catch (IOException e) {
@@ -56,7 +55,8 @@ public class Server {
             }
         }
 
-        private byte[] process(byte[] input) {
+        private byte[] process(java.lang.String input) {
+            System.out.println("收到请求：\n" + input);
             String response = null;
             try {
                 String body = "hello";
@@ -69,7 +69,7 @@ public class Server {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                System.out.println(response);
+                System.out.println("返回响应：\n" + response);
             }
             return "response: null".getBytes();
         }

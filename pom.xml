@@ -30,7 +30,7 @@
         <module>ratelimit</module>
         <module>redis</module>
         <module>reflection</module>
-        <module>simpleDubbo</module>
+        <module>simpleRPC</module>
         <module>simpleNIO</module>
         <module>simpleSocket</module>
         <module>sitemeshDemo</module>
@@ -65,6 +65,8 @@
         <module>aviatorTest</module>
         <module>springStateMachine</module>
         <module>aspectJLTWdemo</module>
+        <module>aspectJCTWdemo</module>
+        <module>springboottest</module>
     </modules>
 
     <properties>

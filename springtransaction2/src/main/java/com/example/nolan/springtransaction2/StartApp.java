@@ -6,14 +6,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableLoadTimeWeaving;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
 @SpringBootApplication
 @EnableTransactionManagement(mode = AdviceMode.ASPECTJ)
-@EnableLoadTimeWeaving(aspectjWeaving = EnableLoadTimeWeaving.AspectJWeaving.ENABLED)
+//@EnableLoadTimeWeaving(aspectjWeaving = EnableLoadTimeWeaving.AspectJWeaving.ENABLED)
 public class StartApp {
 
     public static void main(String[] args) {
@@ -30,5 +33,12 @@ public class StartApp {
 
         return simpleDriverDataSource;
     }
+//
+//    @Bean
+//    public TransactionManager txManager(){
+//        PlatformTransactionManager transactionManager = new DataSourceTransactionManager(dataSource());
+////        AnnotationTransactionAspect.aspectOf().setTransactionManager(transactionManager);
+//        return transactionManager;
+//    }
 
 }

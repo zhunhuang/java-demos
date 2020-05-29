@@ -24,7 +24,7 @@ public class RuleAnnotationTest {
         Thread.sleep(10001);
     }
 
-    @Test
+    @Test(expected = RuntimeException.class)
     public void test_failOnException() {
         throw new RuntimeException("mock exception");
     }

@@ -8,25 +8,20 @@
              http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd"
        default-autowire="byName">
 
-    <!--加载配置文件 -->
-    <context:property-placeholder ignore-resource-not-found="true"
-                                  location="classpath*:/application.properties"/>
-
     <context:component-scan base-package="hello"/>
 
 
     <!-- Spring Simple连接池 -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
-        <property name="driverClass" value="${jdbc.driver}"/>
-        <property name="url" value="${jdbc.url}"/>
-        <property name="username" value="${jdbc.username}"/>
-        <property name="password" value="${jdbc.password}"/>
+        <property name="driverClass" value="org.h2.Driver"/>
+        <property name="url" value="jdbc:h2:mem:h2db;DB_CLOSE_DELAY=-1"/>
+        <property name="username" value="sa"/>
+        <property name="password" value=""/>
     </bean>
 
     <!-- 初始化数据表结构 -->
     <jdbc:initialize-database ignore-failures="NONE" enabled="true">
         <jdbc:script location="classpath:sql/init.sql"/>
-        <jdbc:script location="classpath:sql/importData.sql" encoding="UTF-8"/>
     </jdbc:initialize-database>
 
     <!--创建事务管理器-->
@@ -35,6 +30,6 @@
         <property name="dataSource" ref="dataSource"></property>
     </bean>
     <!--启用事务注解-->
-    <tx:annotation-driven transaction-manager="transactionManager" mode="aspectj"></tx:annotation-driven>
+    <tx:annotation-driven transaction-manager="transactionManager"></tx:annotation-driven>
 
 </beans>
