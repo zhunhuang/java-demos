@@ -50,6 +50,7 @@ public class DateTableSqlGenerator {
 
 //        sql = "alter table clear_record_#date# add column `clear_states` bigint(20) not null default 0 after `status`;\n";
         generateByDate("20200101","20210101",sql);
+        // 本次，新增了个bug
 
 //        generateByInt(1,1000, sql);
     }
