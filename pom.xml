@@ -67,6 +67,7 @@
         <module>aspectJLTWdemo</module>
         <module>aspectJCTWdemo</module>
         <module>springboottest</module>
+        <module>log4jExceptionTest</module>
     </modules>
 
     <properties>

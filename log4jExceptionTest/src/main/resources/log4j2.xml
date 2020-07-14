@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="OFF">
+    <appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{DEFAULT} [%t] %-5p (%C{1}:%L) - [%marker] %m%n"/>
+        </Console>
+
+        <RollingRandomAccessFile name="FileAppender" fileName="info.log" filePattern="info-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="%d{DEFAULT} [%t] %-5p (%C{1}:%L) - [%marker] %m%n"/>
+
+            <Policies>
+                <!-- 用来指定按照时间滚动，单位根据filePattern中的精准度来控制，这里是yyyy-MM-dd，也就是按天滚动-->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+                <SizeBasedTriggeringPolicy size="2000 MB"/>
+            </Policies>
+        </RollingRandomAccessFile>
+
+    </appenders>
+    <loggers>
+        <root level="info">
+            <appender-ref ref="FileAppender"/>
+        </root>
+    </loggers>
+</configuration>

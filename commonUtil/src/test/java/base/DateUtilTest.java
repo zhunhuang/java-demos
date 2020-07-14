@@ -25,4 +25,17 @@ public class DateUtilTest {
         Date date = DateUtils.parseDate("2020-04-19", "yyyy-MM-dd");
         assertEquals(19, DateUtil.getDayOfMonth(date));
     }
+
+    @Test
+    public void getYear() throws ParseException {
+        Date date = DateUtils.parseDate("2020-04-19", "yyyy-MM-dd");
+        assertEquals(2020, DateUtil.getYear(date));
+    }
+
+    @Test
+    public void getMonth() throws ParseException {
+        Date date = DateUtils.parseDate("2020-04-19", "yyyy-MM-dd");
+        assertEquals(3, DateUtil.getMonth(date));
+        assertEquals(3, DateUtil.getMonth2(date));
+    }
 }

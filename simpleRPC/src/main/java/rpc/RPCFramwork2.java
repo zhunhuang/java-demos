@@ -29,7 +29,7 @@ public class RPCFramwork2 {
     }
 
     /**
-     * 暴露服务
+     * 暴露服务 = 开启一个异步线程，通过serverSocket监听端口
      *
      * @param service 服务实现类
      * @param port    服务端口
@@ -50,7 +50,7 @@ public class RPCFramwork2 {
     }
 
     /**
-     * 引用服务
+     * 获取服务 = 返回一个实现该服务接口的代理类，代理类内部通过socket发起远程通信
      *
      * @param interfaceClass 接口类型
      * @param host           服务器主机名

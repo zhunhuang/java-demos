@@ -123,4 +123,26 @@ public class DateUtil {
 
         return cd.get(Calendar.DAY_OF_MONTH);
     }
+
+    public static long getYear(Date date) {
+        //获得入参的年
+        Calendar cd = Calendar.getInstance();
+        cd.setTime(date);
+
+        return cd.get(Calendar.YEAR);
+    }
+
+    public static long getMonth(Date date) {
+        //获得入参的年
+        Calendar cd = Calendar.getInstance();
+        cd.setTime(date);
+
+        return cd.get(Calendar.MONTH);
+    }
+
+    public static long getMonth2(Date date) {
+        return DateUtils.toCalendar(date).get(Calendar.MONTH);
+    }
+
+
 }

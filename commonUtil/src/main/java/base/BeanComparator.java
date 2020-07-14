@@ -6,6 +6,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.util.*;
 
+
 /**
  * description:
  *
@@ -61,7 +62,11 @@ public class BeanComparator {
                         continue;
                     }
                     // 2. 实现了Comparable接口，判断compareTo是否相等
-                    if (o1 instanceof Comparable && ((Comparable) o1).compareTo(o2) == 0) {
+                    if (o1 instanceof Comparable && o2 != null && ((Comparable) o1).compareTo(o2) == 0) {
+                        continue;
+                    }
+                    // 3. 针对map的diff, 简单使用
+                    if (o1 instanceof Map && o2 instanceof Map && mapEqual((Map<Object, Object>) o1,(Map<Object, Object>)o2)) {
                         continue;
                     }
 
@@ -71,11 +76,28 @@ public class BeanComparator {
                     list.add(o2);
                     diffMap.put(name, list);
                 } catch (Exception e) {
-                    throw new RuntimeException("compare" + pd.getName() + "error, cause: ", e);
+                    throw new RuntimeException("compare " + pd.getName() + " error, cause: ", e);
                 }
             }
         }
         return new CompareResult(diffMap);
+    }
+
+    private static boolean mapEqual(Map<Object, Object> m1, Map<Object, Object> m2) {
+        if (m1.size() != m2.size()) {
+            return false;
+        }
+        for (Map.Entry<Object, Object> entry : m1.entrySet()) {
+            Object value1 = entry.getValue();
+            Object value2 = m2.get(entry.getKey());
+            if (!Objects.equals(value1, value2)) {
+                if (value1 instanceof Comparable && ((Comparable) value1).compareTo(value2) == 0) {
+                    continue;
+                }
+                return false;
+            }
+        }
+        return true;
     }
 
     public static class CompareResult {

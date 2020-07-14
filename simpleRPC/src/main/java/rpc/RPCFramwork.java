@@ -17,7 +17,7 @@ import java.net.Socket;
 public class RPCFramwork {
 
     /**
-     * 暴露服务
+     * 暴露服务 = 开启一个异步线程，通过serverSocket监听端口
      *
      * @param service 服务实现类
      * @param port    服务端口
@@ -74,7 +74,7 @@ public class RPCFramwork {
     }
 
     /**
-     * 引用服务
+     * 获取服务 = 返回一个实现该服务接口的代理类，代理类内部通过socket发起远程通信
      *
      * @param interfaceClass 接口类型
      * @param host           服务器主机名
@@ -97,29 +97,26 @@ public class RPCFramwork {
             throw new IllegalArgumentException("Invalid port " + port);
         }
         System.out.println("Get remote service [" + interfaceClass.getName() + "] from server " + host + ":" + port);
-        return (T) Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class<?>[]{interfaceClass}, new InvocationHandler() {
-            @Override
-            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                Socket socket = new Socket(host, port);
+        return (T) Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class<?>[]{interfaceClass}, (proxy, method, args) -> {
+            Socket socket = new Socket(host, port);
+            try {
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
                 try {
-                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-                    try {
-                        objectOutputStream.writeUTF(method.getName());
-                        objectOutputStream.writeObject(method.getParameterTypes());
-                        objectOutputStream.writeObject(args);
-                        try (ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream())) {
-                            Object result = inputStream.readObject();
-                            if (result instanceof Throwable) {
-                                throw (Throwable) result;
-                            }
-                            return result;
+                    objectOutputStream.writeUTF(method.getName());
+                    objectOutputStream.writeObject(method.getParameterTypes());
+                    objectOutputStream.writeObject(args);
+                    try (ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream())) {
+                        Object result = inputStream.readObject();
+                        if (result instanceof Throwable) {
+                            throw (Throwable) result;
                         }
-                    } finally {
-                        objectOutputStream.close();
+                        return result;
                     }
                 } finally {
-                    socket.close();
+                    objectOutputStream.close();
                 }
+            } finally {
+                socket.close();
             }
         });
     }
