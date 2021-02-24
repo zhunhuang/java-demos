@@ -1,7 +1,7 @@
 package proxy.jdkproxy;
 
 /**
- * description:
+ * description: 业务代码, 实现类
  *
  * @author zhun.huang 2019-02-24
  */

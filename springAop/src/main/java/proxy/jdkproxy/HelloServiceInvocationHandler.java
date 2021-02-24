@@ -4,7 +4,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 /**
- * description:
+ * description: 通用的代理, 想做一些事情
  *
  * @author zhun.huang 2019-02-24
  */

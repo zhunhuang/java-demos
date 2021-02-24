@@ -26,7 +26,7 @@ public class MainTest {
 
         startMonitor();
 //        printExceptionWithReflection(); // QPS 7600
-//        printExceptionWithReflectionExclude(); //QPS 65000
+        printExceptionWithReflectionExclude(); //QPS 65000
 //        printExceptionNoReflection();// QPS 65000
 //        printExceptionApacheUtil();// QPS 65000
         printNoException();//QPS 99000

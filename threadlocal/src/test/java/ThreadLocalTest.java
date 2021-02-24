@@ -30,7 +30,8 @@ public class ThreadLocalTest {
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
-            userName.set("t1-thread-set");
+                System.out.println("t1: " + userName.get());
+                userName.set("t1-thread-set");
                 System.out.println("t1: " + userName.get());
             }
         });

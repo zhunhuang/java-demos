@@ -65,6 +65,8 @@ public class TransmittableThreadLocal<T> extends InheritableThreadLocal<T> {
     }
 
     private static InheritableThreadLocal<Map<TransmittableThreadLocal<?>, ?>> holder =
+
+
             new InheritableThreadLocal<Map<TransmittableThreadLocal<?>, ?>>() {
                 @Override
                 protected Map<TransmittableThreadLocal<?>, ?> initialValue() {

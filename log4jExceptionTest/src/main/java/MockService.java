@@ -76,7 +76,7 @@ public class MockService {
             try {
                 return (int) getNameMethod.invoke(RemoteServiceMock.class, name);
             } catch (Exception e) {
-                throw e;
+                throw new RuntimeException(e);
             }
         }
 
