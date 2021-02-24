@@ -74,7 +74,7 @@
         <dom4j.version>1.6.1</dom4j.version>
         <org.slf4j-version>1.7.25</org.slf4j-version>
         <logback.version>1.2.3</logback.version>
-        <org.springframework.security.version>4.1.5.RELEASE</org.springframework.security.version>
+        <org.springframework.security.version>5.3.3.RELEASE</org.springframework.security.version>
         <org.springframework.version>4.3.11.RELEASE</org.springframework.version>
     </properties>
 
